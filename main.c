@@ -17,14 +17,18 @@
 
 #include "nokia5110.h"
 
-uint8_t flecha[] = { 0b00011100, 0b00011100, 0b00111110, 0b00011100, 0b00001000 };
-uint8_t pacman[] = { 0b00111000, 0b01101100, 0b01110000, 0b01111100, 0b00111000 };
-uint8_t rua[] = { 0b10000000, 0b00000000,0b00000000 ,0b00000000 ,0b00000000  };
- 
+//uint8_t flecha[] = { 0b00011100, 0b00011100, 0b00111110, 0b00011100, 0b00001000 };
+uint8_t flecha[] = { 0b00010000, 0b00111110, 0b01111110, 0b00111110, 0b00010000 };
+uint8_t pacman[] = { 0b00001110, 0b00011011, 0b00011100, 0b00011111, 0b00001110 };
+//uint8_t rua[] = { 0b11111111, 0b00000000, 0b10101010, 0b10101010, 0b00000000  };//outro modelo de rua 
+uint8_t rua[] = { 0b11111111, 0b00000000, 0b11001100, 0b11001100, 0b00000000  };
+uint8_t borda[] = { 0b11111111, 0b00000000, 0b11001100, 0b11001100, 0b11111111  };
 
 
 //uint8_t bomba[] = { 0b00000000, 0b00000000, 0b00111000, 0b00111100, 0b00111010 };
 
+void atualiza_lcd(int y);
+void inicia_rua(int y);
 int main(void)
 {
     nokia_lcd_init();
@@ -39,14 +43,45 @@ int main(void)
     nokia_lcd_write_string("\002", 2);
 
     nokia_lcd_custom(3, rua);
-    nokia_lcd_set_cursor(0, 6);
-    nokia_lcd_write_string("\003", 2);
-     nokia_lcd_set_cursor(0, 12);
-    nokia_lcd_write_string("\003", 2);
+    nokia_lcd_custom(4, borda);
+    nokia_lcd_custom(5, flecha);
+    
+
+    inicia_rua(0);
+    inicia_rua(12);
+    inicia_rua(24);
+    inicia_rua(36);
+
+    nokia_lcd_custom(2, pacman);
+    nokia_lcd_set_cursor(34, 37);
+    nokia_lcd_write_string("\002", 2);
 
     nokia_lcd_render();
-
+    int i = 0;
     for (;;) {
-        _delay_ms(1000);
+        nokia_lcd_set_cursor(34, i);
+        nokia_lcd_write_string("\005", 2);
+        nokia_lcd_render();
+        _delay_ms(500);
+        i++;
     }
+}
+
+void atualiza_lcd(int y){
+
+}
+
+void inicia_rua(int y){
+    nokia_lcd_set_cursor(1, y);
+    nokia_lcd_write_string("\003", 3);
+    nokia_lcd_set_cursor(16, y);
+    nokia_lcd_write_string("\003", 3);
+    nokia_lcd_set_cursor(31, y);
+    nokia_lcd_write_string("\003", 3);
+    nokia_lcd_set_cursor(46, y);
+    nokia_lcd_write_string("\003", 3);
+    nokia_lcd_set_cursor(61, y);
+    nokia_lcd_write_string("\004", 3);
+
+    nokia_lcd_render();
 }
