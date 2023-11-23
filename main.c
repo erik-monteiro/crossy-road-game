@@ -27,6 +27,7 @@ uint8_t teste[] = { 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000  
 
 void atualiza_lcd(int y);
 void inicia_rua(int y);
+
 int main(void)
 {
     DDRD &= ~(1 << PD7);                    // seta PD7 como entrada
@@ -35,11 +36,7 @@ int main(void)
     DDRB |= (1 << PB2);                     // seta PB2 como saída
     nokia_lcd_init();
     nokia_lcd_clear();
-
-
     nokia_lcd_custom(3, rua);
-
-
 
     inicia_rua(0);
     inicia_rua(12);
@@ -55,22 +52,51 @@ int main(void)
     nokia_lcd_custom(5, flecha);
     nokia_lcd_custom(6, teste);
     int x = 34;
-    //int i = 0;
+    int i = 0;
     for (;;) {
-        if((PIND &(1 << PD7)) != 0){//se o botão da esquerda(a) foi pressionado
+        int ruaFlecha = rand() % 106;
+
+        if (ruaFlecha == 1) {
+            nokia_lcd_set_cursor(4, i++);
+            _delay_ms(100);
+            nokia_lcd_write_string("\005", 2); 
+            nokia_lcd_render();
+        } else if (ruaFlecha == 2) {
+            nokia_lcd_set_cursor(19, i++);
+            _delay_ms(100);
+            nokia_lcd_write_string("\005", 2); 
+            nokia_lcd_render();
+        } else if (ruaFlecha == 3) {
+            nokia_lcd_set_cursor(34, i++);
+            _delay_ms(100);
+            nokia_lcd_write_string("\005", 2); 
+            nokia_lcd_render();
+        } else if (ruaFlecha == 4) {
+            nokia_lcd_set_cursor(49, i++);
+            _delay_ms(100);
+            nokia_lcd_write_string("\005", 2); 
+            nokia_lcd_render();
+        } else if (ruaFlecha == 5) {
+            nokia_lcd_set_cursor(63, i++);
+            nokia_lcd_write_string("\005", 2); 
+            nokia_lcd_render();
+        } 
+
+        if((PIND &(1 << PD7)) != 0){ //se o botão da esquerda(a) foi pressionado
             if(x >= 4 && x <= 64){
                 nokia_lcd_set_cursor(x, 37);
                 nokia_lcd_write_string("\006", 2);        
                 nokia_lcd_render();
                 x = x - 15;
-            }
+            } 
+
             nokia_lcd_set_cursor(x, 37);
             nokia_lcd_write_string("\002", 2);        
             nokia_lcd_render();
             _delay_ms(500);
         }
 
-        if((PIND &(1 << PD6)) != 0){//se o botão da direita(d) foi pressionado
+        if((PIND &(1 << PD6)) != 0){ //se o botão da direita(d) foi pressionado
             if(x >= 4 && x <= 64){
                 nokia_lcd_set_cursor(x, 37);
                 nokia_lcd_write_string("\006", 2);        
@@ -85,9 +111,11 @@ int main(void)
         // nokia_lcd_set_cursor(34, i);
         // nokia_lcd_write_string("\005", 2);
         // nokia_lcd_render();
-        // i++;
+       
     }
 }
+
+
 
 void atualiza_lcd(int y){
 
