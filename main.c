@@ -20,9 +20,8 @@
 //uint8_t flecha[] = { 0b00011100, 0b00011100, 0b00111110, 0b00011100, 0b00001000 };
 uint8_t flecha[] = { 0b00010000, 0b00111110, 0b01111110, 0b00111110, 0b00010000 };
 uint8_t pacman[] = { 0b00001110, 0b00011011, 0b00011100, 0b00011111, 0b00001110 };
-//uint8_t rua[] = { 0b11111111, 0b00000000, 0b10101010, 0b10101010, 0b00000000  };//outro modelo de rua 
-uint8_t rua[] = { 0b11111111, 0b00000000, 0b11001100, 0b11001100, 0b00000000  };
-uint8_t borda[] = { 0b11111111, 0b00000000, 0b11001100, 0b11001100, 0b11111111  };
+uint8_t rua[] = { 0b11111111, 0b00000000, 0b00000000, 0b00000000, 0b00000000  };
+uint8_t teste[] = { 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000  };
 
 
 //uint8_t bomba[] = { 0b00000000, 0b00000000, 0b00111000, 0b00111100, 0b00111010 };
@@ -31,21 +30,17 @@ void atualiza_lcd(int y);
 void inicia_rua(int y);
 int main(void)
 {
+    DDRD &= ~(1 << PD7);                    // seta PD7 como entrada
+    DDRD &= ~(1 << PD6);                    // seta PD6 como entrada
+    DDRB |= (1 << PB1);                     // seta PB1 como saida
+    DDRB |= (1 << PB2);                     // seta PB2 como saída
     nokia_lcd_init();
     nokia_lcd_clear();
-    //nokia_lcd_custom(1, flecha);
-    //nokia_lcd_write_string("IT'S WORKING!",1);
-    //nokia_lcd_set_cursor(0, 12);
-    //nokia_lcd_write_string("\001", 2);
 
-    nokia_lcd_custom(2, pacman);
-    nokia_lcd_set_cursor(34, 34);
-    nokia_lcd_write_string("\002", 2);
 
     nokia_lcd_custom(3, rua);
-    nokia_lcd_custom(4, borda);
-    nokia_lcd_custom(5, flecha);
-    
+
+
 
     inicia_rua(0);
     inicia_rua(12);
@@ -57,13 +52,41 @@ int main(void)
     nokia_lcd_write_string("\002", 2);
 
     nokia_lcd_render();
-    int i = 0;
+
+    nokia_lcd_custom(5, flecha);
+    nokia_lcd_custom(6, teste);
+    int x = 34;
+    //int i = 0;
     for (;;) {
-        nokia_lcd_set_cursor(34, i);
-        nokia_lcd_write_string("\005", 2);
-        nokia_lcd_render();
-        _delay_ms(500);
-        i++;
+        if((PIND &(1 << PD7)) != 0){//se o botão da esquerda(a) foi pressionado
+            if(x >= 4 && x <= 64){
+                nokia_lcd_set_cursor(x, 37);
+                nokia_lcd_write_string("\006", 2);        
+                nokia_lcd_render();
+                x = x - 15;
+            }
+            nokia_lcd_set_cursor(x, 37);
+            nokia_lcd_write_string("\002", 2);        
+            nokia_lcd_render();
+            _delay_ms(500);
+        }
+
+        if((PIND &(1 << PD6)) != 0){//se o botão da direita(d) foi pressionado
+            if(x >= 4 && x <= 64){
+                nokia_lcd_set_cursor(x, 37);
+                nokia_lcd_write_string("\006", 2);        
+                nokia_lcd_render();
+                x = x + 15;
+            }
+            nokia_lcd_set_cursor(x, 37);
+            nokia_lcd_write_string("\002", 2);        
+            nokia_lcd_render();
+            _delay_ms(500);
+        }
+        // nokia_lcd_set_cursor(34, i);
+        // nokia_lcd_write_string("\005", 2);
+        // nokia_lcd_render();
+        // i++;
     }
 }
 
@@ -72,16 +95,18 @@ void atualiza_lcd(int y){
 }
 
 void inicia_rua(int y){
-    nokia_lcd_set_cursor(1, y);
+    nokia_lcd_set_cursor(0, y);
     nokia_lcd_write_string("\003", 3);
-    nokia_lcd_set_cursor(16, y);
+    nokia_lcd_set_cursor(15, y);
     nokia_lcd_write_string("\003", 3);
-    nokia_lcd_set_cursor(31, y);
+    nokia_lcd_set_cursor(30, y);
     nokia_lcd_write_string("\003", 3);
-    nokia_lcd_set_cursor(46, y);
+    nokia_lcd_set_cursor(45, y);
     nokia_lcd_write_string("\003", 3);
-    nokia_lcd_set_cursor(61, y);
-    nokia_lcd_write_string("\004", 3);
+    nokia_lcd_set_cursor(60, y);
+    nokia_lcd_write_string("\003", 3);
+    nokia_lcd_set_cursor(75, y);
+    nokia_lcd_write_string("\003", 2);
 
     nokia_lcd_render();
 }
