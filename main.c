@@ -21,12 +21,13 @@
 uint8_t flecha[] = { 0b00010000, 0b00111110, 0b01111110, 0b00111110, 0b00010000 };
 uint8_t pacman[] = { 0b00001110, 0b00011011, 0b00011100, 0b00011111, 0b00001110 };
 uint8_t rua[] = { 0b11111111, 0b00000000, 0b00000000, 0b00000000, 0b00000000  };
-uint8_t teste[] = { 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000  };
+uint8_t borracha[] = { 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000  };
 
 //uint8_t bomba[] = { 0b00000000, 0b00000000, 0b00111000, 0b00111100, 0b00111010 };
 
 void atualiza_lcd(int y);
 void inicia_rua(int y);
+int geraFlecha();
 
 int main(void)
 {
@@ -50,37 +51,16 @@ int main(void)
     nokia_lcd_render();
 
     nokia_lcd_custom(5, flecha);
-    nokia_lcd_custom(6, teste);
+    nokia_lcd_custom(6, borracha);
     int x = 34;
     int i = 0;
     for (;;) {
-        int ruaFlecha = rand() % 106;
 
-        if (ruaFlecha == 1) {
-            nokia_lcd_set_cursor(4, i++);
-            _delay_ms(100);
-            nokia_lcd_write_string("\005", 2); 
-            nokia_lcd_render();
-        } else if (ruaFlecha == 2) {
-            nokia_lcd_set_cursor(19, i++);
-            _delay_ms(100);
-            nokia_lcd_write_string("\005", 2); 
-            nokia_lcd_render();
-        } else if (ruaFlecha == 3) {
-            nokia_lcd_set_cursor(34, i++);
-            _delay_ms(100);
-            nokia_lcd_write_string("\005", 2); 
-            nokia_lcd_render();
-        } else if (ruaFlecha == 4) {
-            nokia_lcd_set_cursor(49, i++);
-            _delay_ms(100);
-            nokia_lcd_write_string("\005", 2); 
-            nokia_lcd_render();
-        } else if (ruaFlecha == 5) {
-            nokia_lcd_set_cursor(63, i++);
-            nokia_lcd_write_string("\005", 2); 
-            nokia_lcd_render();
-        } 
+        int aux = geraFlecha();
+        nokia_lcd_set_cursor(aux, i);
+        _delay_ms(100);
+        nokia_lcd_write_string("\005", 2); 
+        nokia_lcd_render();
 
         if((PIND &(1 << PD7)) != 0){ //se o botão da esquerda(a) foi pressionado
             if(x >= 4 && x <= 64){
@@ -111,7 +91,7 @@ int main(void)
         // nokia_lcd_set_cursor(34, i);
         // nokia_lcd_write_string("\005", 2);
         // nokia_lcd_render();
-       
+        i++;
     }
 }
 
@@ -136,4 +116,9 @@ void inicia_rua(int y){
     nokia_lcd_write_string("\003", 2);
 
     nokia_lcd_render();
+}
+
+int geraFlecha(){
+    int ruaFlecha = ((rand() % 5) * 15) + 4;
+    return ruaFlecha;
 }
