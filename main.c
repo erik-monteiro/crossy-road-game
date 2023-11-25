@@ -28,6 +28,7 @@ uint8_t borracha[] = { 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b0000000
 uint8_t minutos = 0;
 uint8_t segundos = 0;
 uint8_t milisegundos = 0;
+uint8_t flecha_posicao;
 
 //uint8_t bomba[] = { 0b00000000, 0b00000000, 0b00111000, 0b00111100, 0b00111010 };
 
@@ -48,17 +49,20 @@ ISR(INT1_vect)
 }
 
 ISR(TIMER2_COMPA_vect){
-    if(milisegundos >= 99){
-            milisegundos = 0;
-            segundos +=1;
-            geraFlecha(); // Gera uma flecha a cada segundo
-        }
-
-        if(segundos >= 60){
+    milisegundos++;
+    if (milisegundos >= 100) {
+        milisegundos = 0;
+        segundos++;
+        if (segundos >= 60) {
             segundos = 0;
-            minutos += 1;
+            minutos++;
         }
-    milisegundos += 1;
+    }
+
+    if (milisegundos % 500 == 0) {
+        flecha_posicao = geraFlecha();
+    }
+
 }
 
 
@@ -86,11 +90,9 @@ int main(void)
     PORTB &= ~(1 << PB0);                   // desabilita pull-up de PB0
     PORTD &= ~(1 << PD7);                   // desabilita pull-up de PD7
     
-
     EICRA = (1 << ISC01) | (1 << ISC00);
     EICRA |= (1 << ISC11) | (0 << ISC10);
     EIMSK |= (1 << INT1) | (1 << INT0); 
-
 
     sei();                                  //habilita interrupções
 
@@ -120,12 +122,10 @@ int main(void)
     TIMSK2 |= (1 << OCIE2A);    // habilita máscara do timer2
 
     for (;;) {
-
-        // int aux = geraFlecha();
-        // nokia_lcd_set_cursor(aux, i);
-        // _delay_ms(100);
-        // nokia_lcd_write_string("\005", 2); 
-        // nokia_lcd_render();
+        nokia_lcd_set_cursor(flecha_posicao, i++);
+        nokia_lcd_write_string("\005", 2); 
+        _delay_ms(100);
+        nokia_lcd_render();
 
         if((PIND &(1 << PD7)) != 0 && x > 4 && x <= 64){ //se o botão da esquerda(a) foi pressionado
             nokia_lcd_set_cursor(x, 37);
@@ -150,7 +150,6 @@ int main(void)
             nokia_lcd_render();
             _delay_ms(200);
         }
-        i++;
     }
 }
 
@@ -177,10 +176,6 @@ void inicia_rua(int y){
     nokia_lcd_render();
 }
 
-int geraFlecha(){
-    int ruaFlecha = ((rand() % 5) * 15) + 4;
-    nokia_lcd_set_cursor(ruaFlecha, 0);
-    _delay_ms(100);
-    nokia_lcd_write_string("\005", 2); 
-    nokia_lcd_render();
+int geraFlecha() {
+    return ((rand() % 5) * 15) + 4;
 }
