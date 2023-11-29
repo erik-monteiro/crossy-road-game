@@ -20,7 +20,6 @@
 #include <avr/interrupt.h>
 #include "nokia5110.h"
 
-//uint8_t flecha[] = { 0b00011100, 0b00011100, 0b00111110, 0b00011100, 0b00001000 };
 uint8_t flecha[] = { 0b00010000, 0b00111110, 0b01111110, 0b00111110, 0b00010000 };
 uint8_t pacman[] = { 0b00001110, 0b00011011, 0b00011100, 0b00011111, 0b00001110 };
 uint8_t rua[] = { 0b11111111, 0b00000000, 0b00000000, 0b00000000, 0b00000000  };
@@ -121,7 +120,6 @@ int main(void)
 
     nokia_lcd_custom(5, flecha);
     nokia_lcd_custom(6, borracha);
-    int i = 0;
 
     OCR2A = (TIMER_CLK / IRQ_FREQ) - 1;// seta o registrador output compare
     // liga modo CTC
@@ -147,7 +145,7 @@ int main(void)
             nokia_lcd_write_string("\002", 2);        
             nokia_lcd_render();
             morreu();
-            _delay_ms(50); //tentar tirar o delay 
+            _delay_ms(50);
         }
 
         morreu();
@@ -167,7 +165,7 @@ int main(void)
             nokia_lcd_write_string("\002", 2);        
             nokia_lcd_render();
             morreu();
-            _delay_ms(50); //tentar tirar o delay 
+            _delay_ms(50);
         }
 
         morreu();
