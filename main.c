@@ -60,8 +60,9 @@ ISR(TIMER2_COMPA_vect){
             minutos++;
         }
     }
-    
+    // if(milisegundos%2==0){
         arrow_position++;
+    // }
     
     if (arrow_position > 60) {
         arrow_position = 0;
@@ -69,7 +70,6 @@ ISR(TIMER2_COMPA_vect){
     }
 }
 
-// void atualiza_borracha();
 void atualiza_flecha();
 void inicia_rua(int y);
 int geraFlecha();
@@ -126,7 +126,6 @@ int main(void)
     TIMSK2 |= (1 << OCIE2A);    // habilita máscara do timer2
 
     for (;;) {
-        // atualiza_borracha();
         atualiza_flecha();
         nokia_lcd_render();
 
@@ -142,7 +141,6 @@ int main(void)
             _delay_ms(50); //tentar tirar o delay 
         }
 
-        // atualiza_borracha();
         atualiza_flecha();
         nokia_lcd_render();
         
@@ -159,14 +157,12 @@ int main(void)
             _delay_ms(50); //tentar tirar o delay 
         }
 
-        if((PIND &(1 << PD6)) != 0 || (PIND &(1 << PD7)) != 0){
-            botao = 1;
-        }else{
-            botao = 0;
-        }
-
-        // atualiza_borracha();
         atualiza_flecha();
+        if(arrow_position > 10 && flecha_posicao >= 4 && flecha_posicao <= 64){
+            int b = arrow_position-10;
+            nokia_lcd_set_cursor(flecha_posicao, b);
+            nokia_lcd_write_string("\006", 2);    
+        }
         nokia_lcd_render();
     }
 }
@@ -174,18 +170,11 @@ int main(void)
 
 
 void atualiza_flecha(){
-    if(flecha_posicao >= 4 && flecha_posicao <= 64){
+    if(flecha_posicao >= 4 && flecha_posicao <= 64){ 
         nokia_lcd_set_cursor(flecha_posicao, arrow_position);
         nokia_lcd_write_string("\005", 2);
     }
 }
-
-// void atualiza_borracha(){
-//     if(flecha_posicao >= 4 && flecha_posicao <= 64){
-//         nokia_lcd_set_cursor(flecha_posicao, arrow_position-4);
-//         nokia_lcd_write_string("\006", 2);
-//     }
-// }
 
 void inicia_rua(int y){
     nokia_lcd_set_cursor(0, y);
