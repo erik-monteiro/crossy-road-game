@@ -145,7 +145,7 @@ int main(void)
             nokia_lcd_write_string("\002", 2);        
             nokia_lcd_render();
             morreu();
-            _delay_ms(50);
+            _delay_ms(100);
         }
 
         morreu();
@@ -165,7 +165,7 @@ int main(void)
             nokia_lcd_write_string("\002", 2);        
             nokia_lcd_render();
             morreu();
-            _delay_ms(50);
+            _delay_ms(100);
         }
 
         morreu();
@@ -184,7 +184,7 @@ void tela_inicial(){
     nokia_lcd_set_cursor(5, 25);
     nokia_lcd_write_string("Aperte start",1);
     nokia_lcd_render();
-    while ((PINB &(1 << PB0)) == 0)// Enquanto o botão de start não for pressionado
+    while ((PINB &(1 << PB0)) == 0)// Enquanto o botão de start(s) não for pressionado
     {
         if((PINB &(1 << PB0)) == 1){
             return;
