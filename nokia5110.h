@@ -31,7 +31,7 @@
 #define LCD_DC PB3
 #define LCD_DIN PB4
 #define LCD_CLK PB5
-
+ 3dBGV8eCGa
 #define LCD_CONTRAST 0x40
 
 /*
