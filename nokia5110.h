@@ -41,7 +41,7 @@ void nokia_lcd_init(void);
 
 /*
  * Clear screen
- */ e4fvQZuPRD
+ */
 void nokia_lcd_clear(void);
 
 /**
