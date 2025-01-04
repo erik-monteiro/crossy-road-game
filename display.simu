@@ -56,7 +56,7 @@ Unique  Id: Resistor-82:
 Circuit Id: Resistor-58
 <item labelrot="0" id="Resistor-58" labely="-20" boardPos="-1e+06,-1e+06" valLabelx="-12" circRot="8.148463838255e-312" y="-128" vflip="1" Resistance="100" mainComp="false" rotation="-90" objectName="Resistor-82" Unit=" Ω" Show_res="true" x="-252" valLabRot="0" Show_id="false" boardRot="-1e+06" labelx="-12" circPos="0,0" hflip="1" valLabely="4" itemtype="Resistor"/>
 
-Unique  Id: Push-83:  ccWIzCsLip
+Unique  Id: Push-83: 
 Circuit Id: Push-55
 <item labelrot="0" Poles="1" id="Push-55" labely="-24" boardPos="-1e+06,-1e+06" valLabelx="0" circRot="-5.757327169409483e+307" y="-148" vflip="1" Norm_Close="false" mainComp="false" rotation="0" objectName="Push-83" x="-300" valLabRot="0" Show_id="false" boardRot="-1e+06" Key="s" labelx="-16" circPos="0,0" hflip="1" valLabely="0" itemtype="Push"/>
 
